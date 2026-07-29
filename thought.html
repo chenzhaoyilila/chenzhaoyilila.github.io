@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title data-en="Thought · Zhaoyi Chen" data-zh="随笔 · Zhaoyi Chen">Thought · Zhaoyi Chen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --text-dark: #333;
+      --text-muted: #888;
+      --text-light: #aaa;
+      --bg: #f8f8f8;
+      --border-subtle: rgba(0, 0, 0, 0.06);
+    }
+    body {
+      font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      color: var(--text-dark);
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      padding: 1.5rem 2.5rem;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: var(--text-dark);
+      font-weight: 600;
+      font-size: 1rem;
+      outline: none;
+      background: transparent;
+    }
+    .logo:focus, .logo:focus-visible { outline: none; box-shadow: none; }
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      position: relative;
+      display: inline-block;
+    }
+    .logo-mark .circle-fill,
+    .logo-mark .circle-outline {
+      position: absolute;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      width: 20px;
+      height: 10px;
+      margin-left: -10px;
+      margin-top: -5px;
+      transform-origin: center center;
+    }
+    .logo-mark .circle-fill {
+      background: linear-gradient(135deg, #1a1a1a 0%, #555 100%);
+      animation: logoEllipse1 10s linear infinite;
+    }
+    .logo-mark .circle-outline {
+      background: linear-gradient(315deg, #888 0%, #1a1a1a 100%);
+      opacity: 0.95;
+      animation: logoEllipse2 10s linear infinite;
+    }
+    @keyframes logoEllipse1 {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes logoEllipse2 {
+      0% { transform: rotate(360deg); }
+      100% { transform: rotate(0deg); }
+    }
+    .btn {
+      display: inline-block;
+      padding: 0.6rem 1.5rem;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border: 1px solid var(--text-dark);
+      color: var(--text-dark);
+      background: transparent;
+      cursor: pointer;
+      font-family: inherit;
+      transition: opacity 0.2s, transform 0.2s ease;
+    }
+    .btn:hover { opacity: 0.85; transform: translateY(-1px); }
+    .lang-toggle {
+      display: inline-flex;
+      align-items: center;
+      padding: 0;
+      border: 1px solid var(--border-subtle);
+      border-radius: 999px;
+      background: transparent;
+      font-family: inherit;
+      line-height: 1;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .lang-toggle .lang-opt {
+      padding: 0.3rem 0.6rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .lang-toggle .lang-opt.is-active {
+      background: var(--text-dark);
+      color: #fff;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    main {
+      flex: 1;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 3rem 2.5rem 4rem;
+      width: 100%;
+    }
+    .meta {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 0.5rem;
+    }
+    h1 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      line-height: 1.25;
+    }
+    .thought-date {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+    .thought-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .thought-tags .tag {
+      font-size: 0.75rem;
+      color: var(--text-light);
+    }
+    .thought-prose {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+    }
+    .thought-prose p { margin-bottom: 1rem; }
+    .thought-prose ul, .thought-prose ol { margin: 1rem 0 1rem 1.25rem; }
+    .thought-prose li { margin-bottom: 0.35rem; }
+    .thought-prose img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 1.5rem 0;
+      border: 1px solid var(--border-subtle);
+    }
+    .thought-prose figure { margin: 1.5rem 0; }
+    .thought-prose code {
+      font-size: 0.9em;
+      background: rgba(0,0,0,0.06);
+      padding: 0.15em 0.4em;
+      border-radius: 3px;
+    }
+    .thought-error { color: var(--text-muted); }
+    .transition-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+    .transition-overlay.active { opacity: 1; visibility: visible; }
+    .transition-overlay.out { opacity: 0; visibility: hidden; }
+    .transition-overlay .loader-mark { width: 40px; height: 40px; position: relative; }
+    .transition-overlay .loader-mark .circle-fill,
+    .transition-overlay .loader-mark .circle-outline {
+      position: absolute;
+      border-radius: 50%;
+    }
+    .transition-overlay .loader-mark .circle-fill {
+      width: 24px;
+      height: 24px;
+      background: var(--text-dark);
+      top: 0;
+      left: 0;
+      animation: loaderPulse 0.8s ease-in-out infinite;
+    }
+    .transition-overlay .loader-mark .circle-outline {
+      width: 24px;
+      height: 24px;
+      border: 2px solid var(--text-dark);
+      top: 10px;
+      left: 10px;
+      opacity: 0.4;
+    }
+    @keyframes loaderPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(0.92); opacity: 0.7; }
+    }
+    .transition-overlay .loader-line {
+      width: 120px;
+      height: 2px;
+      background: var(--border-subtle);
+      border-radius: 1px;
+      overflow: hidden;
+    }
+    .transition-overlay .loader-line-inner {
+      height: 100%;
+      width: 0;
+      background: var(--text-dark);
+      border-radius: 1px;
+      animation: loaderLine 1s ease-in-out infinite;
+    }
+    @keyframes loaderLine {
+      0% { width: 0; margin-left: 0; }
+      50% { width: 40%; margin-left: 30%; }
+      100% { width: 0; margin-left: 100%; }
+    }
+    .transition-overlay .loader-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="logo js-transition" data-transition="page">
+      <span class="logo-mark">
+        <span class="circle-fill"></span>
+        <span class="circle-outline"></span>
+      </span>
+      <span>ZC</span>
+    </a>
+    <div class="header-actions">
+      <button type="button" class="lang-toggle" id="lang-toggle" aria-label="Switch language / 切换语言">
+        <span class="lang-opt" data-lang="zh">中</span>
+        <span class="lang-opt" data-lang="en">EN</span>
+      </button>
+      <a href="index.html#thoughts" class="btn js-transition" data-transition="page" data-en="← Back to thoughts" data-zh="← 返回随笔">← Back to thoughts</a>
+    </div>
+  </header>
+
+  <main id="thought-main">
+    <p class="thought-error" data-en="Loading…" data-zh="正在加载…">Loading…</p>
+  </main>
+
+  <div id="transition-overlay" class="transition-overlay" aria-hidden="true">
+    <div class="loader-mark">
+      <span class="circle-fill"></span>
+      <span class="circle-outline"></span>
+    </div>
+    <div class="loader-line">
+      <div class="loader-line-inner"></div>
+    </div>
+    <span class="loader-label" data-en="Loading" data-zh="加载中">Loading</span>
+  </div>
+
+  <script>
+    /* ---- i18n: labels for this page's chrome (post body stays as authored) ---- */
+    var I18N = {
+      meta: { en: 'Thought', zh: '随笔' },
+      noSlug: {
+        en: 'No post selected. Go back to <a href="index.html#thoughts">thoughts</a>.',
+        zh: '未选择文章。返回<a href="index.html#thoughts">随笔</a>。'
+      },
+      notFound: {
+        en: 'This note was not found. Check the slug in content/posts.json.',
+        zh: '未找到该文章。请检查 content/posts.json 中的 slug。'
+      },
+      loadError: {
+        en: 'Could not load content/posts.json. Use a local server (e.g. Live Server) and ensure the file exists.',
+        zh: '无法加载 content/posts.json。请使用本地服务器（如 Live Server）打开，并确认文件存在。'
+      }
+    };
+    function lang() { return window.__lang === 'zh' ? 'zh' : 'en'; }
+    function t(key) { var e = I18N[key]; return e ? e[lang()] : ''; }
+
+    /* ---- Language toggle: swap every [data-en]/[data-zh] node ---- */
+    (function i18nToggle() {
+      function detect() {
+        var stored = null;
+        try { stored = localStorage.getItem('lang'); } catch (e) {}
+        if (stored === 'zh' || stored === 'en') return stored;
+        return /^zh/i.test(navigator.language || '') ? 'zh' : 'en';
+      }
+      function apply(l) {
+        window.__lang = l;
+        document.documentElement.lang = l === 'zh' ? 'zh-CN' : 'en';
+        document.querySelectorAll('[data-en]').forEach(function (el) {
+          var v = el.getAttribute(l === 'zh' ? 'data-zh' : 'data-en');
+          if (v != null) el.textContent = v;
+        });
+        document.querySelectorAll('.lang-toggle .lang-opt').forEach(function (o) {
+          o.classList.toggle('is-active', o.getAttribute('data-lang') === l);
+        });
+        try { localStorage.setItem('lang', l); } catch (e) {}
+        document.dispatchEvent(new CustomEvent('langchange', { detail: { lang: l } }));
+      }
+      var toggle = document.getElementById('lang-toggle');
+      if (toggle) {
+        toggle.addEventListener('click', function (e) {
+          var opt = e.target.closest('.lang-opt');
+          var next = opt ? opt.getAttribute('data-lang') : (window.__lang === 'zh' ? 'en' : 'zh');
+          apply(next);
+        });
+      }
+      window.__applyLang = apply;
+      apply(detect());
+    })();
+
+    (function () {
+      var OVERLAY_DURATION = 1200;
+      var overlay = document.getElementById('transition-overlay');
+
+      function showOverlay(label) {
+        if (!overlay) return;
+        overlay.setAttribute('aria-hidden', 'false');
+        overlay.classList.remove('out');
+        overlay.classList.add('active');
+        var lbl = overlay.querySelector('.loader-label');
+        if (lbl && label) lbl.textContent = label;
+      }
+
+      function hideOverlay() {
+        if (!overlay) return;
+        overlay.classList.add('out');
+        overlay.classList.remove('active');
+        setTimeout(function () {
+          overlay.setAttribute('aria-hidden', 'true');
+        }, 400);
+      }
+
+      document.querySelectorAll('.js-transition').forEach(function (link) {
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+          var transition = link.getAttribute('data-transition');
+          var target = link.getAttribute('data-target') || link.getAttribute('href');
+          if (transition === 'page' && target) {
+            showOverlay('Loading');
+            setTimeout(function () {
+              window.location.href = target;
+            }, OVERLAY_DURATION);
+          }
+        });
+      });
+
+      var params = new URLSearchParams(window.location.search);
+      var slug = params.get('slug');
+      var main = document.getElementById('thought-main');
+      var currentPost = null;
+      var state = slug ? 'loading' : 'no-slug';
+
+      function render() {
+        if (state === 'no-slug') {
+          main.innerHTML = '<p class="thought-error">' + t('noSlug') + '</p>';
+        } else if (state === 'not-found') {
+          main.innerHTML = '<p class="thought-error">' + t('notFound') + '</p>';
+        } else if (state === 'error') {
+          main.innerHTML = '<p class="thought-error">' + t('loadError') + '</p>';
+        } else if (state === 'loaded' && currentPost) {
+          var post = currentPost;
+          document.title = post.title + ' · Zhaoyi Chen';
+          var tagsHtml = '';
+          if (post.tags && post.tags.length) {
+            tagsHtml = '<div class="thought-tags">' + post.tags.map(function (tag) {
+              return '<span class="tag">' + escapeHtml(tag) + '</span>';
+            }).join('') + '</div>';
+          }
+          main.innerHTML =
+            '<p class="meta">' + t('meta') + '</p>' +
+            '<h1>' + escapeHtml(post.title) + '</h1>' +
+            (post.date ? '<p class="thought-date">' + escapeHtml(post.date) + '</p>' : '') +
+            tagsHtml +
+            '<div class="thought-prose">' + (post.bodyHtml || '') + '</div>';
+        }
+      }
+
+      document.addEventListener('langchange', render);
+
+      if (!slug) {
+        render();
+      } else {
+        fetch('content/posts.json')
+          .then(function (r) {
+            if (!r.ok) throw new Error('bad status');
+            return r.json();
+          })
+          .then(function (data) {
+            var posts = data.posts || [];
+            var post = posts.find(function (p) { return p.slug === slug; });
+            if (!post) { state = 'not-found'; render(); return; }
+            currentPost = post;
+            state = 'loaded';
+            render();
+          })
+          .catch(function () {
+            state = 'error';
+            render();
+          });
+      }
+
+      function escapeHtml(s) {
+        var div = document.createElement('div');
+        div.textContent = s;
+        return div.innerHTML;
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title data-en="Zhaoyi Chen · Personal Website" data-zh="Zhaoyi Chen · 个人网站">Zhaoyi Chen · Personal Website</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --text-dark: #333;
+      --text-muted: #888;
+      --text-light: #aaa;
+      --bg: #f8f8f8;
+      --bg-hero: linear-gradient(90deg, #f0f4ff 0%, #fdf2f8 100%);
+      --border-subtle: rgba(0, 0, 0, 0.06);
+    }
+
+    body {
+      font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      color: var(--text-dark);
+      background-color: var(--bg);
+    }
+
+    /* Minimal header – logo only */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 1.5rem 2.5rem;
+      background: transparent;
+      transition: background 0.3s;
+    }
+
+    header.scrolled {
+      background: rgba(248, 248, 248, 0.95);
+      backdrop-filter: blur(10px);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: var(--text-dark);
+      font-weight: 600;
+      font-size: 1rem;
+      transition: opacity 0.2s ease;
+      outline: none;
+      background: transparent;
+    }
+
+    .logo:focus,
+    .logo:focus-visible {
+      outline: none;
+      box-shadow: none;
+    }
+
+    .logo-mark {
+      width: 36px;
+      height: 36px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .logo-mark .circle-fill,
+    .logo-mark .circle-outline {
+      position: absolute;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+    }
+
+    /* 后面：黑→灰 | 前面：灰→黑；两椭圆同尺寸 */
+    .logo-mark .circle-fill {
+      width: 20px;
+      height: 10px;
+      margin-left: -10px;
+      margin-top: -5px;
+      background: linear-gradient(135deg, #1a1a1a 0%, #555 100%);
+      transform-origin: center center;
+      animation: logoEllipse1 10s linear infinite;
+    }
+
+    .logo-mark .circle-outline {
+      width: 20px;
+      height: 10px;
+      margin-left: -10px;
+      margin-top: -5px;
+      background: linear-gradient(315deg, #888 0%, #1a1a1a 100%);
+      opacity: 0.95;
+      transform-origin: center center;
+      animation: logoEllipse2 10s linear infinite;
+    }
+
+    /* 360° 旋转，两椭圆相互依存：一顺一逆，同周期 */
+    @keyframes logoEllipse1 {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes logoEllipse2 {
+      0%   { transform: rotate(360deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    .logo:hover {
+      opacity: 0.8;
+    }
+
+    /* Section corner logo – top-left of each section */
+    .section-logo {
+      position: absolute;
+      top: 2rem;
+      left: 2.5rem;
+      width: 28px;
+      height: 28px;
+      pointer-events: none;
+    }
+
+    .section-logo .circle-fill,
+    .section-logo .circle-outline {
+      position: absolute;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      width: 16px;
+      height: 8px;
+      margin-left: -8px;
+      margin-top: -4px;
+      transform-origin: center center;
+    }
+
+    .section-logo .circle-fill {
+      background: linear-gradient(135deg, #1a1a1a 0%, #555 100%);
+      animation: logoEllipse1 8s ease-in-out infinite;
+    }
+
+    .section-logo .circle-outline {
+      background: linear-gradient(315deg, #888 0%, #1a1a1a 100%);
+      opacity: 0.9;
+      animation: logoEllipse2 8s ease-in-out infinite;
+    }
+
+    .hero,
+    .section {
+      position: relative;
+    }
+
+    .hero .section-logo {
+      top: 3rem;
+      left: 2.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .section-logo,
+      .hero .section-logo {
+        top: 1.5rem;
+        left: 1.5rem;
+      }
+      .section-logo { width: 24px; height: 24px; }
+      .section-logo .circle-fill,
+      .section-logo .circle-outline {
+        width: 14px;
+        height: 7px;
+        margin-left: -7px;
+        margin-top: -3.5px;
+      }
+    }
+
+    /* Hero – full viewport, centered, soft gradient */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      background: var(--bg-hero);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 700;
+      color: var(--text-dark);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+      line-height: 1.15;
+    }
+
+    .hero .tagline {
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 0.5rem;
+    }
+
+    .hero .sub {
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: var(--text-muted);
+    }
+
+    .hero .cta-wrap {
+      margin-top: 3rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* Hero entrance – staggered fade-in */
+    .hero .hero-item {
+      opacity: 0;
+      transform: translateY(12px);
+      animation: heroFadeIn 0.6s ease forwards;
+    }
+
+    .hero .hero-item:nth-child(1) { animation-delay: 0.1s; }
+    .hero .hero-item:nth-child(2) { animation-delay: 0.2s; }
+    .hero .hero-item:nth-child(3) { animation-delay: 0.3s; }
+    .hero .hero-item:nth-child(4) { animation-delay: 0.4s; }
+    .hero .hero-item:nth-child(5) { animation-delay: 0.5s; }
+    .hero .cta-wrap.hero-item { animation-delay: 0.65s; }
+
+    @keyframes heroFadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.6rem 1.5rem;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border: 1px solid var(--text-dark);
+      color: var(--text-dark);
+      background: transparent;
+      cursor: pointer;
+      transition: opacity 0.2s, color 0.2s, transform 0.2s ease;
+    }
+
+    .btn:hover {
+      opacity: 0.85;
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: var(--text-dark);
+      color: #fff;
+      border-color: var(--text-dark);
+    }
+
+    /* Sections – max-width, generous padding */
+    .section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 5rem 2.5rem;
+    }
+
+    /* Scroll-in reveal */
+    .section.reveal-ready .section-head,
+    .section.reveal-ready .cards-row,
+    .section.reveal-ready .statement,
+    .section.reveal-ready .desc,
+    .section.reveal-ready .projects-grid,
+    .section.reveal-ready .thoughts-grid,
+    .section.reveal-ready .thoughts-toolbar,
+    .section.reveal-ready .newsletter-box,
+    .section.reveal-ready .contact-content {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .section.reveal-in .section-head,
+    .section.reveal-in .cards-row,
+    .section.reveal-in .statement,
+    .section.reveal-in .desc,
+    .section.reveal-in .projects-grid,
+    .section.reveal-in .thoughts-grid,
+    .section.reveal-in .thoughts-toolbar,
+    .section.reveal-in .newsletter-box,
+    .section.reveal-in .contact-content {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section.reveal-ready .card,
+    .section.reveal-ready .project-card,
+    .section.reveal-ready .thought-card {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .section.reveal-in .cards-row .card:nth-child(1) { transition-delay: 0.1s; }
+    .section.reveal-in .cards-row .card:nth-child(2) { transition-delay: 0.2s; }
+    .section.reveal-in .cards-row .card:nth-child(3) { transition-delay: 0.3s; }
+    .section.reveal-in .projects-grid .project-card:nth-child(1) { transition-delay: 0.1s; }
+    .section.reveal-in .projects-grid .project-card:nth-child(2) { transition-delay: 0.15s; }
+    .section.reveal-in .projects-grid .project-card:nth-child(3) { transition-delay: 0.2s; }
+
+    .section.reveal-in .card,
+    .section.reveal-in .project-card,
+    .section.reveal-in .thought-card {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Thoughts / diary / newsletter */
+    .thoughts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 0;
+    }
+
+    .thought-card {
+      background: #fff;
+      padding: 1.75rem;
+      border-top: 1px solid var(--border-subtle);
+      text-align: left;
+      transition: border-color 0.25s ease, padding-left 0.25s ease, opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .thought-card:hover {
+      border-top-color: var(--text-muted);
+      padding-left: 2rem;
+    }
+
+    .thought-thumb-wrap {
+      margin: -0.25rem -1.75rem 1rem;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .thought-thumb {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .thought-card-date {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      letter-spacing: 0.05em;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .thought-card h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 0.5rem;
+      line-height: 1.35;
+    }
+
+    .thought-excerpt {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 0.75rem;
+    }
+
+    .thought-card .thought-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.75rem;
+    }
+
+    .thoughts-placeholder,
+    .thoughts-error {
+      grid-column: 1 / -1;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      padding: 0.5rem 0;
+    }
+
+    .thoughts-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .thoughts-toolbar-label {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .thought-filter-btn {
+      font-family: inherit;
+      font-size: 0.8rem;
+      padding: 0.45rem 1rem;
+      border: 1px solid var(--border-subtle);
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: 4px;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+
+    .thought-filter-btn:hover {
+      color: var(--text-dark);
+      border-color: var(--text-muted);
+    }
+
+    .thought-filter-btn.is-active {
+      background: var(--text-dark);
+      color: #fff;
+      border-color: var(--text-dark);
+    }
+
+    /* Newsletter callout – readers open your writing */
+    .newsletter-cta {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 2.5rem 2rem;
+    }
+
+    .newsletter-box {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem;
+      border: 1px solid var(--border-subtle);
+      background: #fff;
+      text-align: center;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .newsletter-kicker {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 0.75rem;
+    }
+
+    .newsletter-box h2 {
+      font-size: clamp(1.35rem, 3vw, 1.75rem);
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: var(--text-dark);
+    }
+
+    .newsletter-box .newsletter-lead {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-bottom: 1.75rem;
+    }
+
+    .newsletter-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Core focus / About – title row + 3 cards */
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .section-head h2 {
+      font-size: clamp(1.75rem, 3vw, 2.25rem);
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .section-head .en {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+
+    .cards-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5rem;
+    }
+
+    .card {
+      text-align: left;
+      transition: transform 0.25s ease, color 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+    }
+
+    .card:hover .card-icon {
+      color: var(--text-muted);
+    }
+
+    .card .card-icon {
+      transition: color 0.2s ease;
+    }
+
+    .card-icon {
+      font-size: 1.5rem;
+      color: var(--text-light);
+      margin-bottom: 1rem;
+      font-weight: 300;
+      line-height: 1;
+    }
+
+    .card h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 0.75rem;
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      font-weight: 400;
+    }
+
+    /* Manifesto block */
+    .manifesto {
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .manifesto .section-head {
+      margin-bottom: 1.5rem;
+    }
+
+    .manifesto .statement {
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      font-weight: 600;
+      color: var(--text-dark);
+      line-height: 1.4;
+      max-width: 28em;
+    }
+
+    .manifesto .statement .emphasis {
+      color: var(--text-muted);
+    }
+
+    .manifesto .desc {
+      margin-top: 1.5rem;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+      max-width: 36em;
+    }
+
+    .manifesto-graphic {
+      position: absolute;
+      right: 5%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: min(280px, 40vw);
+      height: min(280px, 40vw);
+      pointer-events: none;
+      opacity: 0.35;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .manifesto.reveal-in .manifesto-graphic {
+      opacity: 0.4;
+      transform: translateY(-50%) scale(1.02);
+    }
+
+    .manifesto-graphic circle {
+      fill: none;
+      stroke: var(--text-light);
+      stroke-width: 1;
+    }
+
+    .manifesto-graphic .dot {
+      fill: var(--text-dark);
+      stroke: none;
+    }
+
+    /* Projects – minimal cards */
+    #projects .section-head h2 {
+      margin-bottom: 0;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .project-card {
+      background: #fff;
+      padding: 1.75rem;
+      border-radius: 0;
+      border: none;
+      box-shadow: none;
+      border-top: 1px solid var(--border-subtle);
+      transition: border-color 0.25s ease, padding-left 0.25s ease;
+    }
+
+    .project-card:hover {
+      border-top-color: var(--text-muted);
+      padding-left: 2rem;
+    }
+
+    .project-card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .project-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .project-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.75rem;
+    }
+
+    .tag {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      font-weight: 400;
+    }
+
+    .project-link {
+      display: inline-block;
+      margin-top: 1rem;
+      font-size: 0.875rem;
+      color: var(--text-dark);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .project-link:hover {
+      color: var(--text-muted);
+    }
+
+    /* Contact */
+    #contact .section-head {
+      margin-bottom: 2rem;
+    }
+
+    .contact-content {
+      max-width: 520px;
+    }
+
+    .contact-form {
+      background: transparent;
+      padding: 0;
+      box-shadow: none;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.35rem;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: var(--text-dark);
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.65rem 0;
+      border: none;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 1rem;
+      font-family: inherit;
+      background: transparent;
+      color: var(--text-dark);
+      transition: border-color 0.2s ease;
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: var(--text-light);
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-bottom-color: var(--text-dark);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1.25rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .social-link {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .social-link:hover {
+      color: var(--text-dark);
+    }
+
+    /* Footer – minimal, centered */
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: var(--text-light);
+      font-size: 0.8rem;
+      font-weight: 400;
+    }
+
+    footer .footer-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--text-light);
+      margin: 0 auto 1.25rem;
+      opacity: 0.6;
+    }
+
+    footer p {
+      margin: 0.25rem 0;
+    }
+
+    /* Nav links – optional minimal nav */
+    nav {
+      position: fixed;
+      top: 1.5rem;
+      right: 2.5rem;
+      z-index: 1001;
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    nav a {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.2s ease;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 0;
+      height: 1px;
+      background: var(--text-dark);
+      transition: width 0.25s ease;
+    }
+
+    nav a:hover {
+      color: var(--text-dark);
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* Language toggle – 中 / EN */
+    .lang-toggle {
+      display: inline-flex;
+      align-items: center;
+      padding: 0;
+      border: 1px solid var(--border-subtle);
+      border-radius: 999px;
+      background: transparent;
+      font-family: inherit;
+      line-height: 1;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .lang-toggle .lang-opt {
+      padding: 0.3rem 0.6rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .lang-toggle .lang-opt.is-active {
+      background: var(--text-dark);
+      color: #fff;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .cards-row {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head {
+        flex-direction: column;
+      }
+
+      .manifesto-graphic {
+        display: none;
+      }
+
+      .hero .cta-wrap {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      nav {
+        right: 1.5rem;
+        gap: 1rem;
+      }
+
+      header .logo span:not(.logo-mark) {
+        display: none;
+      }
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Transition overlay – loading before scroll or navigate */
+    .transition-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+
+    .transition-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .transition-overlay.out {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .transition-overlay .loader-mark {
+      width: 40px;
+      height: 40px;
+      position: relative;
+    }
+
+    .transition-overlay .loader-mark .circle-fill,
+    .transition-overlay .loader-mark .circle-outline {
+      position: absolute;
+      border-radius: 50%;
+    }
+
+    .transition-overlay .loader-mark .circle-fill {
+      width: 24px;
+      height: 24px;
+      background: var(--text-dark);
+      top: 0;
+      left: 0;
+      animation: loaderPulse 0.8s ease-in-out infinite;
+    }
+
+    .transition-overlay .loader-mark .circle-outline {
+      width: 24px;
+      height: 24px;
+      border: 2px solid var(--text-dark);
+      top: 10px;
+      left: 10px;
+      opacity: 0.4;
+    }
+
+    @keyframes loaderPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(0.92); opacity: 0.7; }
+    }
+
+    .transition-overlay .loader-line {
+      width: 120px;
+      height: 2px;
+      background: var(--border-subtle);
+      border-radius: 1px;
+      overflow: hidden;
+    }
+
+    .transition-overlay .loader-line-inner {
+      height: 100%;
+      width: 0;
+      background: var(--text-dark);
+      border-radius: 1px;
+      animation: loaderLine 1s ease-in-out infinite;
+    }
+
+    @keyframes loaderLine {
+      0% { width: 0; margin-left: 0; }
+      50% { width: 40%; margin-left: 30%; }
+      100% { width: 0; margin-left: 100%; }
+    }
+
+    .transition-overlay .loader-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .transition-overlay .loader-mark .circle-fill { animation: none; }
+      .transition-overlay .loader-line-inner { animation: none; }
+      .transition-overlay .loader-line-inner { width: 60%; margin-left: 20%; }
+      .logo-mark .circle-fill,
+      .logo-mark .circle-outline,
+      .section-logo .circle-fill,
+      .section-logo .circle-outline {
+        animation: none;
+      }
+      .logo-mark .circle-fill { transform: rotate(-20deg); }
+      .logo-mark .circle-outline { transform: rotate(20deg); }
+      .section-logo .circle-fill { transform: rotate(-20deg); }
+      .section-logo .circle-outline { transform: rotate(20deg); }
+      .hero .hero-item {
+        animation: none;
+        opacity: 1;
+        transform: none;
+      }
+      .section.reveal-ready .section-head,
+      .section.reveal-ready .cards-row,
+      .section.reveal-ready .statement,
+      .section.reveal-ready .desc,
+      .section.reveal-ready .projects-grid,
+      .section.reveal-ready .thoughts-grid,
+      .section.reveal-ready .thoughts-toolbar,
+      .section.reveal-ready .newsletter-box,
+      .section.reveal-ready .contact-content,
+      .section.reveal-ready .card,
+      .section.reveal-ready .project-card,
+      .section.reveal-ready .thought-card {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+      .section.reveal-in .card,
+      .section.reveal-in .project-card,
+      .section.reveal-in .thought-card { transition-delay: 0s; }
+      .btn:hover { transform: none; }
+      .card:hover { transform: none; }
+      .project-card:hover { padding-left: 1.75rem; }
+      .thought-card:hover { padding-left: 1.75rem; }
+    }
+  </style>
+</head>
+<body>
+  <header id="header">
+    <a href="#home" class="logo">
+      <span class="logo-mark">
+        <span class="circle-fill"></span>
+        <span class="circle-outline"></span>
+      </span>
+      <span>ZC</span>
+    </a>
+  </header>
+
+  <nav>
+    <a href="#home" data-en="Home" data-zh="首页">Home</a>
+    <a href="#about" data-en="About" data-zh="关于">About</a>
+    <a href="#projects" class="js-transition" data-transition="scroll" data-target="#projects" data-en="Projects" data-zh="项目">Projects</a>
+    <a href="#thoughts" class="js-thoughts-jump" data-thoughts-filter="newsletter" data-en="Newsletter" data-zh="通讯">Newsletter</a>
+    <a href="#thoughts" class="js-thoughts-jump" data-thoughts-filter="all" data-en="Thoughts" data-zh="随笔">Thoughts</a>
+    <a href="#contact" data-en="Contact" data-zh="联系">Contact</a>
+    <button type="button" class="lang-toggle" id="lang-toggle" aria-label="Switch language / 切换语言">
+      <span class="lang-opt" data-lang="zh">中</span>
+      <span class="lang-opt" data-lang="en">EN</span>
+    </button>
+  </nav>
+
+  <section id="home" class="hero">
+    <h1 class="hero-item">Zhaoyi Chen</h1>
+    <p class="tagline hero-item" data-en="Software Developer &amp; Creative Problem Solver" data-zh="软件开发者 · 创意问题解决者">Software Developer &amp; Creative Problem Solver</p>
+    <p class="sub hero-item" data-en="Development / Design / Collaboration" data-zh="开发 / 设计 / 协作">Development / Design / Collaboration</p>
+    <div class="cta-wrap hero-item">
+      <a href="#contact" class="btn btn-primary" data-en="Get in Touch" data-zh="联系我">Get in Touch</a>
+      <a href="#projects" class="btn js-transition" data-transition="scroll" data-target="#projects" data-en="View Work" data-zh="查看作品">View Work</a>
+      <a href="#thoughts" class="btn js-thoughts-jump" data-thoughts-filter="newsletter" data-en="Newsletter" data-zh="通讯">Newsletter</a>
+      <a href="resume.html" class="btn js-transition" data-transition="page" data-en="View PDF" data-zh="查看简历">View PDF</a>
+    </div>
+  </section>
+
+  <section id="about" class="section reveal-ready">
+    <span class="section-logo" aria-hidden="true">
+      <span class="circle-fill"></span>
+      <span class="circle-outline"></span>
+    </span>
+    <div class="section-head">
+      <h2 data-en="Focus" data-zh="专注领域">Focus</h2>
+      <span class="en" data-en="Core areas" data-zh="核心方向">Core areas</span>
+    </div>
+    <div class="cards-row">
+      <div class="card">
+        <div class="card-icon">&gt;</div>
+        <h3 data-en="Frontend / Development" data-zh="前端 / 开发">Frontend / Development</h3>
+        <p data-en="Building interfaces from scratch. I write code and structure—clear, maintainable, and thoughtful." data-zh="从零构建界面。代码与结构力求清晰、易维护、有条理。">Building interfaces from scratch. I write code and structure—clear, maintainable, and thoughtful.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">∿</div>
+        <h3 data-en="Backend &amp; APIs" data-zh="后端与接口">Backend &amp; APIs</h3>
+        <p data-en="Solid servers and APIs. I focus on reliability and simple architecture so systems stay predictable." data-zh="稳健的服务器与 API。注重可靠性与简洁架构，让系统保持可预期。">Solid servers and APIs. I focus on reliability and simple architecture so systems stay predictable.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">▦</div>
+        <h3 data-en="Design &amp; UX" data-zh="设计与体验">Design &amp; UX</h3>
+        <p data-en="From idea to layout. I care about how things look and feel, and how users actually use them." data-zh="从想法到布局。在意呈现与手感，也在意用户如何真正使用它们。">From idea to layout. I care about how things look and feel, and how users actually use them.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="manifesto" class="section manifesto reveal-ready">
+    <span class="section-logo" aria-hidden="true">
+      <span class="circle-fill"></span>
+      <span class="circle-outline"></span>
+    </span>
+    <div class="section-head">
+      <span class="en" data-en="Manifesto" data-zh="理念">Manifesto</span>
+    </div>
+    <p class="statement"
+       data-en-html="Code is not just logic,<br /><span class=&quot;emphasis&quot;>it's craft.</span>"
+       data-zh-html="代码不只是逻辑，<br /><span class=&quot;emphasis&quot;>更是手艺。</span>">
+      Code is not just logic,<br />
+      <span class="emphasis">it's craft.</span>
+    </p>
+    <p class="desc" data-en="I focus on development, design, and collaboration. In the space between logic and aesthetics, I try to build things that are both useful and thoughtful." data-zh="我专注于开发、设计与协作。在逻辑与美感之间，尝试做出既实用又用心的东西。">
+      I focus on development, design, and collaboration. In the space between logic and aesthetics, I try to build things that are both useful and thoughtful.
+    </p>
+    <svg class="manifesto-graphic" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="45" />
+      <circle cx="50" cy="50" r="35" />
+      <circle class="dot" cx="50" cy="50" r="3" />
+    </svg>
+  </section>
+
+  <section id="newsletter-cta" class="section newsletter-cta reveal-ready" aria-labelledby="newsletter-cta-title">
+    <div class="newsletter-box">
+      <p class="newsletter-kicker" data-en="For readers" data-zh="致读者">For readers</p>
+      <h2 id="newsletter-cta-title" data-en="Newsletter &amp; writing" data-zh="通讯与写作">Newsletter &amp; writing</h2>
+      <p class="newsletter-lead" data-en="Read what I publish—newsletter drafts, notes, and longer thoughts. Everything lives in one place; visitors only need to click below." data-zh="阅读我发布的内容——通讯草稿、笔记与更长的思考。一切都在这里，点击下方即可。">
+        Read what I publish—newsletter drafts, notes, and longer thoughts. Everything lives in one place; visitors only need to click below.
+      </p>
+      <div class="newsletter-actions">
+        <a href="#thoughts" class="btn btn-primary js-thoughts-jump" data-thoughts-filter="newsletter" data-en="Newsletter" data-zh="通讯">Newsletter</a>
+        <a href="#thoughts" class="btn js-thoughts-jump" data-thoughts-filter="all" data-en="All thoughts" data-zh="全部随笔">All thoughts</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="section reveal-ready">
+    <span class="section-logo" aria-hidden="true">
+      <span class="circle-fill"></span>
+      <span class="circle-outline"></span>
+    </span>
+    <div class="section-head">
+      <h2 data-en="Projects" data-zh="项目">Projects</h2>
+      <span class="en" data-en="Selected work" data-zh="精选作品">Selected work</span>
+    </div>
+    <div class="projects-grid">
+      <div class="project-card">
+        <h3 data-en="Project One" data-zh="项目一">Project One</h3>
+        <p data-en="A description of your project and what it does. Key features and technologies used." data-zh="项目简介：它做什么，以及用到的关键功能与技术。">A description of your project and what it does. Key features and technologies used.</p>
+        <div class="project-tags">
+          <span class="tag">React</span>
+          <span class="tag">Node.js</span>
+          <span class="tag">MongoDB</span>
+        </div>
+        <a href="project-1.html" class="project-link js-transition" data-transition="page" data-en="View project →" data-zh="查看项目 →">View project →</a>
+      </div>
+      <div class="project-card">
+        <h3 data-en="Project Two" data-zh="项目二">Project Two</h3>
+        <p data-en="Another project that shows your skills and how you approach problems." data-zh="另一个项目，展示你的技能与解决问题的方式。">Another project that shows your skills and how you approach problems.</p>
+        <div class="project-tags">
+          <span class="tag">Vue.js</span>
+          <span class="tag">Python</span>
+          <span class="tag">PostgreSQL</span>
+        </div>
+        <a href="project-2.html" class="project-link js-transition" data-transition="page" data-en="View project →" data-zh="查看项目 →">View project →</a>
+      </div>
+      <div class="project-card">
+        <h3 data-en="Project Three" data-zh="项目三">Project Three</h3>
+        <p data-en="A third project that demonstrates range and technical depth." data-zh="第三个项目，体现广度与技术深度。">A third project that demonstrates range and technical depth.</p>
+        <div class="project-tags">
+          <span class="tag">TypeScript</span>
+          <span class="tag">AWS</span>
+          <span class="tag">Docker</span>
+        </div>
+        <a href="project-3.html" class="project-link js-transition" data-transition="page" data-en="View project →" data-zh="查看项目 →">View project →</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="thoughts" class="section reveal-ready">
+    <span class="section-logo" aria-hidden="true">
+      <span class="circle-fill"></span>
+      <span class="circle-outline"></span>
+    </span>
+    <div class="section-head">
+      <h2 data-en="Thoughts" data-zh="随笔">Thoughts</h2>
+      <span class="en" data-en="Notes &amp; newsletter" data-zh="笔记与通讯">Notes &amp; newsletter</span>
+    </div>
+    <div class="thoughts-toolbar" id="thoughts-toolbar" hidden>
+      <span class="thoughts-toolbar-label" id="thoughts-toolbar-label" data-en="Show" data-zh="显示">Show</span>
+      <button type="button" class="thought-filter-btn is-active" data-filter="all" aria-pressed="true" data-en="Everything" data-zh="全部">Everything</button>
+      <button type="button" class="thought-filter-btn" data-filter="newsletter" aria-pressed="false" data-en="Newsletter" data-zh="通讯">Newsletter</button>
+    </div>
+    <div id="thoughts-grid" class="thoughts-grid">
+      <p class="thoughts-placeholder" data-en="Loading notes…" data-zh="正在加载…">Loading notes…</p>
+    </div>
+  </section>
+
+  <section id="contact" class="section reveal-ready">
+    <span class="section-logo" aria-hidden="true">
+      <span class="circle-fill"></span>
+      <span class="circle-outline"></span>
+    </span>
+    <div class="section-head">
+      <h2 data-en="Contact" data-zh="联系">Contact</h2>
+      <span class="en" data-en="Get in touch" data-zh="与我联系">Get in touch</span>
+    </div>
+    <div class="contact-content">
+      <form class="contact-form" onsubmit="handleSubmit(event)">
+        <div class="form-group">
+          <label for="name" data-en="Name" data-zh="姓名">Name</label>
+          <input type="text" id="name" name="name" placeholder="Your name" data-en-ph="Your name" data-zh-ph="你的名字" required />
+        </div>
+        <div class="form-group">
+          <label for="email" data-en="Email" data-zh="邮箱">Email</label>
+          <input type="email" id="email" name="email" placeholder="your@email.com" data-en-ph="your@email.com" data-zh-ph="you@email.com" required />
+        </div>
+        <div class="form-group">
+          <label for="message" data-en="Message" data-zh="留言">Message</label>
+          <textarea id="message" name="message" placeholder="Your message" data-en-ph="Your message" data-zh-ph="你想说的话" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" data-en="Send message" data-zh="发送">Send message</button>
+      </form>
+      <div class="social-links">
+        <a href="mailto:zhaoyic3002@gmail.com" class="social-link" data-en="Email" data-zh="邮箱">Email</a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener" class="social-link">LinkedIn</a>
+        <a href="https://github.com" target="_blank" rel="noopener" class="social-link">GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-dot"></div>
+    <p>© 2026 Zhaoyi Chen</p>
+  </footer>
+
+  <div id="transition-overlay" class="transition-overlay" aria-hidden="true">
+    <div class="loader-mark">
+      <span class="circle-fill"></span>
+      <span class="circle-outline"></span>
+    </div>
+    <div class="loader-line">
+      <div class="loader-line-inner"></div>
+    </div>
+    <span class="loader-label" data-en="Loading" data-zh="加载中">Loading</span>
+  </div>
+
+  <script>
+    /* ---- i18n dictionary for JS-generated strings ---- */
+    var I18N = {
+      loading: { en: 'Loading', zh: '加载中' },
+      read: { en: 'Read →', zh: '阅读 →' },
+      noPosts: {
+        en: 'No posts yet. Add entries to <code>content/posts.json</code>.',
+        zh: '还没有文章。在 <code>content/posts.json</code> 中添加条目即可。'
+      },
+      noMatch: {
+        en: 'No posts match this view. Add the tag <code>newsletter</code> to a post in <code>content/posts.json</code>, or choose “Everything”.',
+        zh: '没有符合此筛选的文章。在 <code>content/posts.json</code> 中为文章添加 <code>newsletter</code> 标签，或选择“全部”。'
+      },
+      loadError: {
+        en: 'Could not load <code>content/posts.json</code>. Run the site with a local server (e.g. Live Server), not <code>file://</code>.',
+        zh: '无法加载 <code>content/posts.json</code>。请使用本地服务器（如 Live Server）打开，而不是通过 <code>file://</code>。'
+      }
+    };
+    function lang() { return window.__lang === 'zh' ? 'zh' : 'en'; }
+    function t(key) { var e = I18N[key]; return e ? e[lang()] : ''; }
+
+    /* ---- Language toggle: swap every [data-en]/[data-zh] node ---- */
+    (function i18nToggle() {
+      function detect() {
+        var stored = null;
+        try { stored = localStorage.getItem('lang'); } catch (e) {}
+        if (stored === 'zh' || stored === 'en') return stored;
+        return /^zh/i.test(navigator.language || '') ? 'zh' : 'en';
+      }
+      function apply(l) {
+        window.__lang = l;
+        document.documentElement.lang = l === 'zh' ? 'zh-CN' : 'en';
+        document.querySelectorAll('[data-en]').forEach(function (el) {
+          var v = el.getAttribute(l === 'zh' ? 'data-zh' : 'data-en');
+          if (v != null) el.textContent = v;
+        });
+        document.querySelectorAll('[data-en-html]').forEach(function (el) {
+          var v = el.getAttribute(l === 'zh' ? 'data-zh-html' : 'data-en-html');
+          if (v != null) el.innerHTML = v;
+        });
+        document.querySelectorAll('[data-en-ph]').forEach(function (el) {
+          var v = el.getAttribute(l === 'zh' ? 'data-zh-ph' : 'data-en-ph');
+          if (v != null) el.setAttribute('placeholder', v);
+        });
+        document.querySelectorAll('.lang-toggle .lang-opt').forEach(function (o) {
+          o.classList.toggle('is-active', o.getAttribute('data-lang') === l);
+        });
+        try { localStorage.setItem('lang', l); } catch (e) {}
+        document.dispatchEvent(new CustomEvent('langchange', { detail: { lang: l } }));
+      }
+      var toggle = document.getElementById('lang-toggle');
+      if (toggle) {
+        toggle.addEventListener('click', function (e) {
+          var opt = e.target.closest('.lang-opt');
+          var next = opt
+            ? opt.getAttribute('data-lang')
+            : (window.__lang === 'zh' ? 'en' : 'zh');
+          apply(next);
+        });
+      }
+      window.__applyLang = apply;
+      apply(detect());
+    })();
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        if (anchor.classList.contains('js-transition')) return;
+        if (anchor.classList.contains('js-thoughts-jump')) return;
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    (function () {
+      var OVERLAY_DURATION = 1200;
+      var overlay = document.getElementById('transition-overlay');
+
+      function showOverlay(label) {
+        if (!overlay) return;
+        overlay.setAttribute('aria-hidden', 'false');
+        overlay.classList.remove('out');
+        overlay.classList.add('active');
+        var lbl = overlay.querySelector('.loader-label');
+        if (lbl) lbl.textContent = t('loading');
+      }
+
+      function hideOverlay() {
+        if (!overlay) return;
+        overlay.classList.add('out');
+        overlay.classList.remove('active');
+        setTimeout(function () {
+          overlay.setAttribute('aria-hidden', 'true');
+        }, 400);
+      }
+
+      document.body.addEventListener('click', function (e) {
+        var link = e.target.closest('a.js-transition');
+        if (!link || !link.getAttribute('data-transition')) return;
+        e.preventDefault();
+        var transition = link.getAttribute('data-transition');
+        var target = link.getAttribute('data-target') || link.getAttribute('href');
+
+        if (transition === 'scroll' && target && target.charAt(0) === '#') {
+          showOverlay('Loading');
+          setTimeout(function () {
+            var el = document.querySelector(target);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            hideOverlay();
+          }, OVERLAY_DURATION);
+          return;
+        }
+
+        if (transition === 'page' && target) {
+          showOverlay('Loading');
+          setTimeout(function () {
+            window.location.href = target;
+          }, OVERLAY_DURATION);
+        }
+      });
+    })();
+
+    (function thoughtsList() {
+      var grid = document.getElementById('thoughts-grid');
+      var toolbar = document.getElementById('thoughts-toolbar');
+      if (!grid) return;
+
+      var allPosts = [];
+      var activeFilter = null;
+
+      function escapeHtml(s) {
+        var div = document.createElement('div');
+        div.textContent = s == null ? '' : String(s);
+        return div.innerHTML;
+      }
+
+      function escapeAttr(s) {
+        return String(s == null ? '' : s)
+          .replace(/&/g, '&amp;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function postMatchesFilter(post) {
+        if (!activeFilter) return true;
+        var tags = (post.tags || []).map(function (t) {
+          return String(t).toLowerCase();
+        });
+        return tags.indexOf(activeFilter) !== -1;
+      }
+
+      function updateToolbarButtons() {
+        if (!toolbar) return;
+        toolbar.querySelectorAll('.thought-filter-btn').forEach(function (btn) {
+          var f = btn.getAttribute('data-filter') || 'all';
+          var on = activeFilter === null ? f === 'all' : f === activeFilter;
+          btn.classList.toggle('is-active', on);
+          btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+      }
+
+      function setThoughtsFilter(filterKey) {
+        if (!filterKey || filterKey === 'all') {
+          activeFilter = null;
+        } else {
+          activeFilter = String(filterKey).toLowerCase();
+        }
+        updateToolbarButtons();
+        renderThoughts();
+      }
+
+      window.__thoughtsSetFilter = setThoughtsFilter;
+
+      function renderThoughts() {
+        var filtered = allPosts.filter(postMatchesFilter);
+        grid.innerHTML = '';
+        if (!allPosts.length) {
+          grid.innerHTML = '<p class="thoughts-error">' + t('noPosts') + '</p>';
+          return;
+        }
+        if (!filtered.length) {
+          grid.innerHTML = '<p class="thoughts-error">' + t('noMatch') + '</p>';
+          return;
+        }
+        filtered.forEach(function (post) {
+          if (!post.slug) return;
+          var article = document.createElement('article');
+          article.className = 'thought-card';
+          var thumb = post.coverImage
+            ? '<div class="thought-thumb-wrap"><img src="' +
+              escapeAttr(post.coverImage) +
+              '" alt="" class="thought-thumb" loading="lazy"></div>'
+            : '';
+          var tags = (post.tags || [])
+            .slice(0, 5)
+            .map(function (t) {
+              return '<span class="tag">' + escapeHtml(t) + '</span>';
+            })
+            .join('');
+          article.innerHTML =
+            thumb +
+            (post.date
+              ? '<time class="thought-card-date">' + escapeHtml(post.date) + '</time>'
+              : '') +
+            '<h3>' + escapeHtml(post.title || 'Untitled') + '</h3>' +
+            '<p class="thought-excerpt">' + escapeHtml(post.excerpt || '') + '</p>' +
+            (tags ? '<div class="thought-tags">' + tags + '</div>' : '') +
+            '<a href="thought.html?slug=' +
+            encodeURIComponent(post.slug) +
+            '" class="project-link js-transition" data-transition="page">' + t('read') + '</a>';
+          grid.appendChild(article);
+        });
+      }
+
+      document.addEventListener('langchange', renderThoughts);
+
+      if (toolbar) {
+        toolbar.addEventListener('click', function (e) {
+          var btn = e.target.closest('.thought-filter-btn');
+          if (!btn) return;
+          setThoughtsFilter(btn.getAttribute('data-filter'));
+        });
+      }
+
+      document.body.addEventListener('click', function (e) {
+        var link = e.target.closest('a.js-thoughts-jump');
+        if (!link) return;
+        e.preventDefault();
+        var f = link.getAttribute('data-thoughts-filter') || 'all';
+        setThoughtsFilter(f);
+        var sec = document.getElementById('thoughts');
+        if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+
+      fetch('content/posts.json')
+        .then(function (r) {
+          if (!r.ok) throw new Error('fetch failed');
+          return r.json();
+        })
+        .then(function (data) {
+          allPosts = (data.posts || []).slice();
+          allPosts.sort(function (a, b) {
+            return (b.date || '').localeCompare(a.date || '');
+          });
+          if (toolbar) toolbar.removeAttribute('hidden');
+          try {
+            if (new URLSearchParams(window.location.search).get('view') === 'newsletter') {
+              activeFilter = 'newsletter';
+              updateToolbarButtons();
+            }
+          } catch (err) {}
+          renderThoughts();
+        })
+        .catch(function () {
+          grid.innerHTML = '<p class="thoughts-error">' + t('loadError') + '</p>';
+        });
+    })();
+
+    window.addEventListener('scroll', function () {
+      const header = document.getElementById('header');
+      header.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Scroll-triggered reveal for sections
+    (function () {
+      const sections = document.querySelectorAll('.section.reveal-ready');
+      const observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('reveal-in');
+            }
+          });
+        },
+        { rootMargin: '0px 0px -80px 0px', threshold: 0 }
+      );
+      sections.forEach(function (el) {
+        observer.observe(el);
+      });
+    })();
+
+    function handleSubmit(event) {
+      event.preventDefault();
+      const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        message: document.getElementById('message').value
+      };
+      var msg = lang() === 'zh'
+        ? `谢谢你，${formData.name}。我会尽快回复 ${formData.email}。`
+        : `Thanks, ${formData.name}. I'll reply to ${formData.email} soon.`;
+      alert(msg);
+      event.target.reset();
+    }
+  </script>
+</body>
+</html>
