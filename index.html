@@ -389,6 +389,33 @@
       margin-bottom: 0.75rem;
     }
 
+    /* Draft preview – only rendered when the URL has ?preview=1 */
+    .preview-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 10001;
+      background: #7c2d12;
+      color: #fff;
+      font-size: 0.75rem;
+      letter-spacing: 0.03em;
+      line-height: 1.5;
+      text-align: center;
+      padding: 0.6rem 1rem;
+    }
+
+    .draft-badge {
+      display: inline-block;
+      background: #7c2d12;
+      color: #fff;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      padding: 0.15rem 0.45rem;
+      border-radius: 3px;
+      margin-bottom: 0.5rem;
+    }
+
     .thoughts-placeholder,
     .thoughts-error {
       grid-column: 1 / -1;
@@ -1357,6 +1384,23 @@
       var allPosts = [];
       var activeFilter = null;
 
+      // Drafts live only in posts.preview.json, which is gitignored, so a
+      // ?preview=1 URL is the only way to see them and they cannot ship.
+      var IS_PREVIEW = false;
+      try {
+        IS_PREVIEW = new URLSearchParams(window.location.search).get('preview') === '1';
+      } catch (e) {}
+      var POSTS_URL = IS_PREVIEW ? 'content/posts.preview.json' : 'content/posts.json';
+      var PREVIEW_QS = IS_PREVIEW ? '&preview=1' : '';
+
+      if (IS_PREVIEW) {
+        var banner = document.createElement('div');
+        banner.className = 'preview-banner';
+        banner.textContent =
+          '预览模式 PREVIEW — 含未发布草稿，仅本地可见 / includes unpublished drafts, local only';
+        document.body.appendChild(banner);
+      }
+
       function escapeHtml(s) {
         var div = document.createElement('div');
         div.textContent = s == null ? '' : String(s);
@@ -1428,6 +1472,7 @@
             .join('');
           article.innerHTML =
             thumb +
+            (post.draft ? '<span class="draft-badge">DRAFT 草稿</span>' : '') +
             (post.date
               ? '<time class="thought-card-date">' + escapeHtml(post.date) + '</time>'
               : '') +
@@ -1436,6 +1481,7 @@
             (tags ? '<div class="thought-tags">' + tags + '</div>' : '') +
             '<a href="thought.html?slug=' +
             encodeURIComponent(post.slug) +
+            PREVIEW_QS +
             '" class="project-link js-transition" data-transition="page">' + t('read') + '</a>';
           grid.appendChild(article);
         });
@@ -1461,7 +1507,7 @@
         if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
 
-      fetch('content/posts.json')
+      fetch(POSTS_URL)
         .then(function (r) {
           if (!r.ok) throw new Error('fetch failed');
           return r.json();

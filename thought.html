@@ -181,6 +181,30 @@
       padding: 0.15em 0.4em;
       border-radius: 3px;
     }
+    .preview-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 10001;
+      background: #7c2d12;
+      color: #fff;
+      font-size: 0.75rem;
+      letter-spacing: 0.03em;
+      line-height: 1.5;
+      text-align: center;
+      padding: 0.6rem 1rem;
+    }
+    .draft-badge {
+      display: inline-block;
+      background: #7c2d12;
+      color: #fff;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      padding: 0.15rem 0.45rem;
+      border-radius: 3px;
+      margin-bottom: 0.75rem;
+    }
     .thought-error { color: var(--text-muted); }
     .transition-overlay {
       position: fixed;
@@ -379,6 +403,18 @@
       var currentPost = null;
       var state = slug ? 'loading' : 'no-slug';
 
+      // Mirrors index.html: drafts exist only in the gitignored preview file.
+      var IS_PREVIEW = params.get('preview') === '1';
+      var POSTS_URL = IS_PREVIEW ? 'content/posts.preview.json' : 'content/posts.json';
+
+      if (IS_PREVIEW) {
+        var banner = document.createElement('div');
+        banner.className = 'preview-banner';
+        banner.textContent =
+          '预览模式 PREVIEW — 含未发布草稿，仅本地可见 / includes unpublished drafts, local only';
+        document.body.appendChild(banner);
+      }
+
       function render() {
         if (state === 'no-slug') {
           main.innerHTML = '<p class="thought-error">' + t('noSlug') + '</p>';
@@ -396,6 +432,7 @@
             }).join('') + '</div>';
           }
           main.innerHTML =
+            (post.draft ? '<span class="draft-badge">DRAFT 草稿</span>' : '') +
             '<p class="meta">' + t('meta') + '</p>' +
             '<h1>' + escapeHtml(post.title) + '</h1>' +
             (post.date ? '<p class="thought-date">' + escapeHtml(post.date) + '</p>' : '') +
@@ -409,7 +446,7 @@
       if (!slug) {
         render();
       } else {
-        fetch('content/posts.json')
+        fetch(POSTS_URL)
           .then(function (r) {
             if (!r.ok) throw new Error('bad status');
             return r.json();

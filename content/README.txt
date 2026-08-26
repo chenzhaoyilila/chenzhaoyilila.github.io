@@ -1,87 +1,111 @@
-THOUGHTS / DIARY / NEWSLETTER — HOW TO ADD CONTENT
-随笔 / 日记 / 通讯 —— 如何添加内容
+WRITING POSTS — 写文章
 ================================================================
 
-------------------------------------------------------------
-ENGLISH
-------------------------------------------------------------
+You write Markdown in content/posts/. A script turns it into the JSON the
+site reads. Drafts stay on your machine until you say so.
 
-1) MAIN DATA FILE
-   Edit:  content/posts.json
+你在 content/posts/ 里写 Markdown，脚本把它转成网站读取的 JSON。
+草稿在你确认之前不会离开你的电脑。
 
-   Each item in the "posts" array can include:
-     - slug        (required) URL-safe id, e.g. "my-weekly-note"
-     - title       (required)
-     - date        (optional) e.g. "2026-04-04"
-     - excerpt     short text shown on the home-page card
-     - tags        optional array of strings.
-                   Include "newsletter" so the post shows up when a visitor
-                   clicks "Newsletter" (hero, nav, or the newsletter block).
-     - coverImage  optional card thumbnail, e.g. "content/images/cover.jpg"
-     - bodyHtml    full article HTML for the detail page (thought.html?slug=...)
 
-   Add a post by copying an existing block and changing slug + fields.
-   Keep valid JSON: commas between objects, double quotes for strings,
-   and escape any double quote inside bodyHtml as  \"
+----------------------------------------------------------------
+THE LOOP — 日常流程
+----------------------------------------------------------------
 
-2) IMAGES
-   Put image files in:  content/images/
-   Reference them in bodyHtml or coverImage as:
-     content/images/yourphoto.jpg
+1. WRITE — 写
+   Create content/posts/2026-08-26-my-note.md
 
-3) PREVIEW
-   Open the site with a local server (e.g. Live Server), NOT file://,
-   so the browser is allowed to load content/posts.json.
+       ---
+       title: 今天的记录
+       date: 2026-08-26
+       tags: [日记]
+       draft: true
+       ---
 
-4) DETAIL PAGE
-   Home -> Thoughts section -> click a card -> thought.html?slug=YOUR_SLUG
+       正文从这里开始。
 
-5) SHARE A NEWSLETTER-ONLY VIEW
-   index.html?view=newsletter#thoughts
-   (opens the page with the Newsletter filter already on)
+       空行 = 新段落，单个回车 = 换行。
 
-NOTE: The 中/EN toggle switches the site's own labels (nav, buttons, headings).
-Your post text (title, excerpt, bodyHtml) shows exactly as you write it in
-posts.json — write each post in whichever language you want.
+2. BUILD — 生成
+       python3 build_posts.py
 
-------------------------------------------------------------
-中文
-------------------------------------------------------------
+3. PREVIEW — 预览（只有你看得到）
+       http://localhost:5510/index.html?preview=1
+   Drafts show a red DRAFT badge and a banner sits at the bottom of the
+   screen, so preview can never be mistaken for the live site.
+   草稿会带红色 DRAFT 标记，底部有固定横幅，不会和线上版本混淆。
 
-1) 主数据文件
-   编辑：  content/posts.json
+4. PUBLISH — 发布
+   Change  draft: true  ->  draft: false, then:
+       python3 build_posts.py
+       git add -A && git commit -m "新文章" && git push
+   Live in about a minute. 大约一分钟后上线。
 
-   "posts" 数组中的每一项可以包含：
-     - slug        （必填）URL 安全的编号，例如 "my-weekly-note"
-     - title       （必填）标题
-     - date        （可选）日期，例如 "2026-04-04"
-     - excerpt     首页卡片上显示的简短摘要
-     - tags        （可选）字符串数组。
-                   加入 "newsletter" 后，访客点击 “Newsletter / 通讯”
-                   （首页大按钮、导航或通讯板块）时就会显示这篇文章。
-     - coverImage  （可选）卡片缩略图，例如 "content/images/cover.jpg"
-     - bodyHtml    详情页（thought.html?slug=...）的完整文章 HTML
 
-   复制一个已有的代码块、修改 slug 和各字段，即可添加新文章。
-   请保持 JSON 合法：对象之间用逗号分隔、字符串用双引号；
-   bodyHtml 内部的双引号要转义为  \"
+----------------------------------------------------------------
+TWO KINDS OF DRAFT — 两种草稿
+----------------------------------------------------------------
 
-2) 图片
-   把图片文件放在：  content/images/
-   在 bodyHtml 或 coverImage 中这样引用：
-     content/images/yourphoto.jpg
+  draft: true in the front matter
+      Not on the website. The .md file IS committed, so it is backed up —
+      but the text is readable in your public GitHub repo.
+      不上网站。.md 会被 commit（有备份），但在公开仓库里别人能读到原文。
 
-3) 预览
-   请使用本地服务器（如 Live Server）打开网站，不要用 file://，
-   否则浏览器无法加载 content/posts.json。
+  filename ending in .draft.md   e.g. 2026-08-27-private.draft.md
+      Not on the website AND not committed. Stays only on this machine.
+      Use this for anything personal.
+      不上网站，也不进 git，只留在你这台电脑上。私人内容用这个。
 
-4) 详情页
-   首页 -> 随笔板块 -> 点击卡片 -> thought.html?slug=你的SLUG
+Either way the post cannot reach the live site: drafts are written only to
+content/posts.preview.json, which is gitignored and never deployed.
+两种方式都无法上线：草稿只写进 content/posts.preview.json，
+该文件已被 gitignore，永远不会被部署。
 
-5) 分享“仅通讯”视图
-   index.html?view=newsletter#thoughts
-   （打开后会自动应用 Newsletter 筛选）
 
-说明：中/EN 切换按钮只切换网站自身的标签（导航、按钮、标题）。
-文章内容（title、excerpt、bodyHtml）会原样显示你在 posts.json 中写的文字，
-所以每篇文章可以用你想要的任意语言来写。
+----------------------------------------------------------------
+FRONT MATTER — 字段说明
+----------------------------------------------------------------
+
+  title     required 必填
+  date      YYYY-MM-DD — falls back to the filename prefix, then file mtime
+            可省略，会依次从文件名前缀、文件修改时间推断
+  tags      [日记, 想法]  — include "newsletter" to appear under the
+            Newsletter filter  写 newsletter 会出现在"通讯"筛选里
+  draft     true | false  (default false)
+  excerpt   optional — auto-generated from the first paragraph
+            可省略，自动取第一段
+  cover     optional — content/images/photo.jpg
+  slug      optional — the URL id; defaults to the filename without its date
+
+Posts are sorted newest-first automatically. 顺序自动按日期倒序，不用管。
+
+
+----------------------------------------------------------------
+MARKDOWN — 支持的语法
+----------------------------------------------------------------
+
+  # 标题 ... ###### 小标题        **粗体**   *斜体*   `行内代码`
+  - 无序列表      1. 有序列表      > 引用     ---（分隔线）
+  [链接](https://example.com)     ![图片说明](content/images/x.jpg)
+  ``` 代码块 ```
+
+  Blank line = new paragraph. Single newline = line break (no stray spaces
+  between Chinese characters).
+  空行 = 新段落。单个回车 = 换行（中文之间不会多出空格）。
+
+IMAGES 图片: put files in content/images/ then reference them as
+content/images/yourfile.jpg
+
+
+----------------------------------------------------------------
+NOTES — 注意
+----------------------------------------------------------------
+
+* Run build_posts.py after every edit — the site reads the generated JSON,
+  not your .md files. 每次改完都要跑一次脚本，网站读的是生成的 JSON。
+* Don't hand-edit content/posts.json; it is overwritten each build.
+  不要手改 content/posts.json，每次生成都会覆盖。
+* Duplicate slugs are rejected with an error naming both files.
+  slug 重复会报错并指出是哪两个文件。
+* The script uses only the Python standard library — no pip install needed.
+  脚本只用标准库，不需要 pip install。
