@@ -19,3 +19,6 @@ pdf_to_markdown.py
 # ---- Draft preview data: contains unpublished drafts, must never deploy ----
 content/posts.preview.json
 content/posts/*.draft.md
+
+# ---- Files page: PDFs you deliberately publish live here ----
+!files/pdf/*.pdf

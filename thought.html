@@ -159,27 +159,54 @@
       font-size: 0.75rem;
       color: var(--text-light);
     }
-    .thought-prose {
-      font-size: 1rem;
-      color: var(--text-muted);
-      line-height: 1.75;
-    }
+    .thought-prose { font-size: 1rem; color: #555; line-height: 1.8; }
+    .thought-prose > :first-child { margin-top: 0; }
     .thought-prose p { margin-bottom: 1rem; }
+    .thought-prose h1, .thought-prose h2, .thought-prose h3, .thought-prose h4 {
+      color: var(--text-dark);
+      font-weight: 600;
+      line-height: 1.35;
+      margin: 2.25rem 0 0.75rem;
+    }
+    .thought-prose h1 { font-size: 1.5rem; }
+    .thought-prose h2 { font-size: 1.3rem; }
+    .thought-prose h3 { font-size: 1.1rem; }
+    .thought-prose h4 { font-size: 1rem; }
+    .thought-prose a { color: var(--text-dark); text-underline-offset: 3px; }
+    .thought-prose strong { color: var(--text-dark); }
     .thought-prose ul, .thought-prose ol { margin: 1rem 0 1rem 1.25rem; }
     .thought-prose li { margin-bottom: 0.35rem; }
+    .thought-prose blockquote {
+      margin: 1.5rem 0;
+      padding-left: 1rem;
+      border-left: 2px solid #ddd;
+      color: var(--text-muted);
+    }
+    .thought-prose blockquote p { margin: 0; }
+    .thought-prose code {
+      font-size: 0.9em;
+      background: rgba(0, 0, 0, 0.06);
+      padding: 0.15em 0.4em;
+      border-radius: 3px;
+    }
+    .thought-prose pre {
+      margin: 1.5rem 0;
+      padding: 1rem 1.25rem;
+      background: #fff;
+      border: 1px solid #e8e8e8;
+      border-radius: 4px;
+      overflow-x: auto;
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+    .thought-prose pre code { background: none; padding: 0; font-size: inherit; }
+    .thought-prose hr { border: 0; border-top: 1px solid #e5e5e5; margin: 2.25rem 0; }
     .thought-prose img {
       max-width: 100%;
       height: auto;
       display: block;
       margin: 1.5rem 0;
       border: 1px solid var(--border-subtle);
-    }
-    .thought-prose figure { margin: 1.5rem 0; }
-    .thought-prose code {
-      font-size: 0.9em;
-      background: rgba(0,0,0,0.06);
-      padding: 0.15em 0.4em;
-      border-radius: 3px;
     }
     .preview-banner {
       position: fixed;
@@ -446,7 +473,7 @@
       if (!slug) {
         render();
       } else {
-        fetch(POSTS_URL)
+        fetch(POSTS_URL, { cache: 'no-cache' })
           .then(function (r) {
             if (!r.ok) throw new Error('bad status');
             return r.json();
@@ -472,5 +499,6 @@
       }
     })();
   </script>
+  <script src="assets/interactions.js" defer></script>
 </body>
 </html>

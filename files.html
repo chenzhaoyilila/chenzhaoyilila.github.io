@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title data-en="Files · Zhaoyi Chen" data-zh="资料 · Zhaoyi Chen">Files · Zhaoyi Chen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --text-dark: #333;
+      --text-muted: #888;
+      --text-light: #aaa;
+      --bg: #f8f8f8;
+      --border-subtle: rgba(0, 0, 0, 0.06);
+    }
+    body {
+      font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      color: var(--text-dark);
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      padding: 1.5rem 2.5rem;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: var(--text-dark);
+      font-weight: 600;
+      font-size: 1rem;
+      outline: none;
+      background: transparent;
+    }
+    .logo:focus, .logo:focus-visible { outline: none; box-shadow: none; }
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      position: relative;
+      display: inline-block;
+    }
+    .logo-mark .circle-fill,
+    .logo-mark .circle-outline {
+      position: absolute;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      width: 20px;
+      height: 10px;
+      margin-left: -10px;
+      margin-top: -5px;
+      transform-origin: center center;
+    }
+    .logo-mark .circle-fill {
+      background: linear-gradient(135deg, #1a1a1a 0%, #555 100%);
+      animation: logoEllipse1 10s linear infinite;
+    }
+    .logo-mark .circle-outline {
+      background: linear-gradient(315deg, #888 0%, #1a1a1a 100%);
+      opacity: 0.95;
+      animation: logoEllipse2 10s linear infinite;
+    }
+    @keyframes logoEllipse1 {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes logoEllipse2 {
+      0% { transform: rotate(360deg); }
+      100% { transform: rotate(0deg); }
+    }
+    .btn {
+      display: inline-block;
+      padding: 0.6rem 1.5rem;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border: 1px solid var(--text-dark);
+      color: var(--text-dark);
+      background: transparent;
+      cursor: pointer;
+      font-family: inherit;
+      transition: opacity 0.2s, transform 0.2s ease;
+    }
+    .btn:hover { opacity: 0.85; transform: translateY(-1px); }
+    .lang-toggle {
+      display: inline-flex;
+      align-items: center;
+      padding: 0;
+      border: 1px solid var(--border-subtle);
+      border-radius: 999px;
+      background: transparent;
+      font-family: inherit;
+      line-height: 1;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .lang-toggle .lang-opt {
+      padding: 0.3rem 0.6rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .lang-toggle .lang-opt.is-active {
+      background: var(--text-dark);
+      color: #fff;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    main {
+      flex: 1;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 3rem 2.5rem 4rem;
+      width: 100%;
+    }
+    .meta {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 0.5rem;
+    }
+    h1 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      line-height: 1.25;
+    }
+    .page-lead {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 3rem;
+    }
+    .file-group + .file-group { margin-top: 3.5rem; }
+    .group-head {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    .group-head h2 { font-size: 1.1rem; font-weight: 600; }
+    .group-count { font-size: 0.75rem; color: var(--text-light); }
+    .file-list { list-style: none; }
+    .file-item {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1.5rem;
+      padding: 1.1rem 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .file-main { min-width: 0; }
+    .file-title {
+      color: var(--text-dark);
+      font-weight: 500;
+      text-decoration: none;
+      overflow-wrap: anywhere;
+    }
+    .file-title:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .file-excerpt { font-size: 0.875rem; color: var(--text-muted); margin-top: 0.3rem; }
+    .file-meta {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      margin-top: 0.3rem;
+      letter-spacing: 0.02em;
+    }
+    .file-action {
+      flex-shrink: 0;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .file-action:hover { color: var(--text-dark); }
+    .file-empty { padding: 1.25rem 0; color: var(--text-light); font-size: 0.9rem; }
+    @media (max-width: 600px) {
+      .file-item { flex-direction: column; gap: 0.4rem; }
+    }
+    .transition-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+    .transition-overlay.active { opacity: 1; visibility: visible; }
+    .transition-overlay.out { opacity: 0; visibility: hidden; }
+    .transition-overlay .loader-mark { width: 40px; height: 40px; position: relative; }
+    .transition-overlay .loader-mark .circle-fill,
+    .transition-overlay .loader-mark .circle-outline {
+      position: absolute;
+      border-radius: 50%;
+    }
+    .transition-overlay .loader-mark .circle-fill {
+      width: 24px;
+      height: 24px;
+      background: var(--text-dark);
+      top: 0;
+      left: 0;
+      animation: loaderPulse 0.8s ease-in-out infinite;
+    }
+    .transition-overlay .loader-mark .circle-outline {
+      width: 24px;
+      height: 24px;
+      border: 2px solid var(--text-dark);
+      top: 10px;
+      left: 10px;
+      opacity: 0.4;
+    }
+    @keyframes loaderPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(0.92); opacity: 0.7; }
+    }
+    .transition-overlay .loader-line {
+      width: 120px;
+      height: 2px;
+      background: var(--border-subtle);
+      border-radius: 1px;
+      overflow: hidden;
+    }
+    .transition-overlay .loader-line-inner {
+      height: 100%;
+      width: 0;
+      background: var(--text-dark);
+      border-radius: 1px;
+      animation: loaderLine 1s ease-in-out infinite;
+    }
+    @keyframes loaderLine {
+      0% { width: 0; margin-left: 0; }
+      50% { width: 40%; margin-left: 30%; }
+      100% { width: 0; margin-left: 100%; }
+    }
+    .transition-overlay .loader-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+    @media (max-width: 768px) {
+      header { padding: 1.25rem 1.5rem; }
+      main { padding: 2.5rem 1.5rem 3rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .logo-mark .circle-fill,
+      .logo-mark .circle-outline { animation: none; }
+      .logo-mark .circle-fill { transform: rotate(-20deg); }
+      .logo-mark .circle-outline { transform: rotate(20deg); }
+      .transition-overlay .loader-mark .circle-fill { animation: none; }
+      .transition-overlay .loader-line-inner { animation: none; width: 60%; margin-left: 20%; }
+      .btn:hover { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="logo js-transition" data-transition="page">
+      <span class="logo-mark">
+        <span class="circle-fill"></span>
+        <span class="circle-outline"></span>
+      </span>
+      <span>ZC</span>
+    </a>
+    <div class="header-actions">
+      <button type="button" class="lang-toggle" id="lang-toggle" aria-label="Switch language / 切换语言">
+        <span class="lang-opt" data-lang="zh">中</span>
+        <span class="lang-opt" data-lang="en">EN</span>
+      </button>
+      <a href="index.html" class="btn js-transition" data-transition="page" data-en="← Back" data-zh="← 返回">← Back</a>
+    </div>
+  </header>
+
+  <main>
+    <p class="meta" data-en="Files" data-zh="资料">Files</p>
+    <h1 data-en="Documents &amp; notes" data-zh="文档与笔记">Documents &amp; notes</h1>
+    <p class="page-lead" data-en="PDF documents and Markdown notes, kept apart." data-zh="PDF 文档与 Markdown 笔记，分开存放。">PDF documents and Markdown notes, kept apart.</p>
+
+    <section class="file-group" aria-labelledby="pdf-heading">
+      <div class="group-head">
+        <h2 id="pdf-heading" data-en="PDF documents" data-zh="PDF 文档">PDF documents</h2>
+        <span class="group-count" id="pdf-count"></span>
+      </div>
+      <ul class="file-list" id="pdf-list">
+        <li class="file-empty" data-en="Loading…" data-zh="正在加载…">Loading…</li>
+      </ul>
+    </section>
+
+    <section class="file-group" aria-labelledby="md-heading">
+      <div class="group-head">
+        <h2 id="md-heading" data-en="Markdown notes" data-zh="Markdown 笔记">Markdown notes</h2>
+        <span class="group-count" id="md-count"></span>
+      </div>
+      <ul class="file-list" id="md-list">
+        <li class="file-empty" data-en="Loading…" data-zh="正在加载…">Loading…</li>
+      </ul>
+    </section>
+  </main>
+
+  <div id="transition-overlay" class="transition-overlay" aria-hidden="true">
+    <div class="loader-mark">
+      <span class="circle-fill"></span>
+      <span class="circle-outline"></span>
+    </div>
+    <div class="loader-line">
+      <div class="loader-line-inner"></div>
+    </div>
+    <span class="loader-label" data-en="Loading" data-zh="加载中">Loading</span>
+  </div>
+
+  <script>
+    var I18N = {
+      empty: { en: 'Nothing here yet.', zh: '暂无内容。' },
+      download: { en: 'Download', zh: '下载' },
+      source: { en: 'Source .md', zh: '原文 .md' },
+      loadError: {
+        en: 'Could not load content/files.json. Run python3 build_files.py and open the site through a local server (e.g. Live Server).',
+        zh: '无法加载 content/files.json。请先运行 python3 build_files.py，并通过本地服务器（如 Live Server）打开。'
+      }
+    };
+    function lang() { return window.__lang === 'zh' ? 'zh' : 'en'; }
+    function t(key) { var e = I18N[key]; return e ? e[lang()] : ''; }
+    function escapeHtml(s) {
+      var div = document.createElement('div');
+      div.textContent = s == null ? '' : String(s);
+      return div.innerHTML;
+    }
+    // Encode each path segment so spaces, CJK, '#' and '?' in filenames survive.
+    function fileUrl(path) {
+      return String(path).split('/').map(encodeURIComponent).join('/');
+    }
+
+    /* ---- Language toggle: swap every [data-en]/[data-zh] node ---- */
+    (function i18nToggle() {
+      function detect() {
+        var stored = null;
+        try { stored = localStorage.getItem('lang'); } catch (e) {}
+        if (stored === 'zh' || stored === 'en') return stored;
+        return /^zh/i.test(navigator.language || '') ? 'zh' : 'en';
+      }
+      function apply(l) {
+        window.__lang = l;
+        document.documentElement.lang = l === 'zh' ? 'zh-CN' : 'en';
+        document.querySelectorAll('[data-en]').forEach(function (el) {
+          var v = el.getAttribute(l === 'zh' ? 'data-zh' : 'data-en');
+          if (v != null) el.textContent = v;
+        });
+        document.querySelectorAll('.lang-toggle .lang-opt').forEach(function (o) {
+          o.classList.toggle('is-active', o.getAttribute('data-lang') === l);
+        });
+        try { localStorage.setItem('lang', l); } catch (e) {}
+        document.dispatchEvent(new CustomEvent('langchange', { detail: { lang: l } }));
+      }
+      var toggle = document.getElementById('lang-toggle');
+      if (toggle) {
+        toggle.addEventListener('click', function (e) {
+          var opt = e.target.closest('.lang-opt');
+          apply(opt ? opt.getAttribute('data-lang') : (window.__lang === 'zh' ? 'en' : 'zh'));
+        });
+      }
+      apply(detect());
+    })();
+
+    /* ---- Page transition, delegated so rendered links get it too ---- */
+    document.body.addEventListener('click', function (e) {
+      var link = e.target.closest('a.js-transition');
+      if (!link || link.getAttribute('data-transition') !== 'page') return;
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      var overlay = document.getElementById('transition-overlay');
+      if (overlay) {
+        overlay.setAttribute('aria-hidden', 'false');
+        overlay.classList.add('active');
+        var lbl = overlay.querySelector('.loader-label');
+        if (lbl) lbl.textContent = lang() === 'zh' ? '加载中' : 'Loading';
+      }
+      var href = link.getAttribute('href');
+      setTimeout(function () { window.location.href = href; }, 1200);
+    });
+
+    /* ---- Two lists: PDFs open in the browser's viewer, notes open in doc.html ---- */
+    (function files() {
+      var data = null;
+      var failed = false;
+
+      function item(f, kind) {
+        var url = fileUrl(f.path);
+        var title = kind === 'pdf'
+          ? '<a class="file-title" href="' + url + '" target="_blank" rel="noopener">' + escapeHtml(f.title) + '</a>'
+          : '<a class="file-title js-transition" data-transition="page" href="doc.html?id=' +
+            encodeURIComponent(f.id) + '">' + escapeHtml(f.title) + '</a>';
+        var action = kind === 'pdf'
+          ? '<a class="file-action" href="' + url + '" download>' + t('download') + '</a>'
+          : '<a class="file-action" href="' + url + '" target="_blank" rel="noopener">' + t('source') + '</a>';
+        return '<li class="file-item"><div class="file-main">' + title +
+          (f.excerpt ? '<p class="file-excerpt">' + escapeHtml(f.excerpt) + '</p>' : '') +
+          '<p class="file-meta">' + escapeHtml(f.date) + ' · ' + escapeHtml(f.size) + '</p>' +
+          '</div>' + action + '</li>';
+      }
+
+      function fill(listId, countId, items, kind) {
+        var list = document.getElementById(listId);
+        var count = document.getElementById(countId);
+        count.textContent = items.length ? String(items.length) : '';
+        list.innerHTML = items.length
+          ? items.map(function (f) { return item(f, kind); }).join('')
+          : '<li class="file-empty">' + t('empty') + '</li>';
+      }
+
+      function render() {
+        if (failed) {
+          ['pdf-list', 'md-list'].forEach(function (id) {
+            document.getElementById(id).innerHTML = '<li class="file-empty">' + t('loadError') + '</li>';
+          });
+          return;
+        }
+        if (!data) return;
+        fill('pdf-list', 'pdf-count', data.pdf || [], 'pdf');
+        fill('md-list', 'md-count', data.markdown || [], 'md');
+      }
+
+      document.addEventListener('langchange', render);
+
+      // no-cache: revalidate every load, so a rebuilt list shows up at once
+      fetch('content/files.json', { cache: 'no-cache' })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(function (d) { data = d; render(); })
+        .catch(function () { failed = true; render(); });
+    })();
+  </script>
+  <script src="assets/interactions.js" defer></script>
+</body>
+</html>

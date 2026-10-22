@@ -48,7 +48,7 @@
     }
 
     .logo {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 0.5rem;
       text-decoration: none;
@@ -118,64 +118,9 @@
       opacity: 0.8;
     }
 
-    /* Section corner logo – top-left of each section */
-    .section-logo {
-      position: absolute;
-      top: 2rem;
-      left: 2.5rem;
-      width: 28px;
-      height: 28px;
-      pointer-events: none;
-    }
-
-    .section-logo .circle-fill,
-    .section-logo .circle-outline {
-      position: absolute;
-      border-radius: 50%;
-      top: 50%;
-      left: 50%;
-      width: 16px;
-      height: 8px;
-      margin-left: -8px;
-      margin-top: -4px;
-      transform-origin: center center;
-    }
-
-    .section-logo .circle-fill {
-      background: linear-gradient(135deg, #1a1a1a 0%, #555 100%);
-      animation: logoEllipse1 8s ease-in-out infinite;
-    }
-
-    .section-logo .circle-outline {
-      background: linear-gradient(315deg, #888 0%, #1a1a1a 100%);
-      opacity: 0.9;
-      animation: logoEllipse2 8s ease-in-out infinite;
-    }
-
     .hero,
     .section {
       position: relative;
-    }
-
-    .hero .section-logo {
-      top: 3rem;
-      left: 2.5rem;
-    }
-
-    @media (max-width: 768px) {
-      .section-logo,
-      .hero .section-logo {
-        top: 1.5rem;
-        left: 1.5rem;
-      }
-      .section-logo { width: 24px; height: 24px; }
-      .section-logo .circle-fill,
-      .section-logo .circle-outline {
-        width: 14px;
-        height: 7px;
-        margin-left: -7px;
-        margin-top: -3.5px;
-      }
     }
 
     /* Hero – full viewport, centered, soft gradient */
@@ -273,6 +218,12 @@
       max-width: 1100px;
       margin: 0 auto;
       padding: 5rem 2.5rem;
+      scroll-margin-top: 1.5rem;
+    }
+
+    /* A hairline between consecutive sections gives each block its own layer */
+    .section + .section {
+      border-top: 1px solid var(--border-subtle);
     }
 
     /* Scroll-in reveal */
@@ -283,7 +234,6 @@
     .section.reveal-ready .projects-grid,
     .section.reveal-ready .thoughts-grid,
     .section.reveal-ready .thoughts-toolbar,
-    .section.reveal-ready .newsletter-box,
     .section.reveal-ready .contact-content {
       opacity: 0;
       transform: translateY(20px);
@@ -297,7 +247,6 @@
     .section.reveal-in .projects-grid,
     .section.reveal-in .thoughts-grid,
     .section.reveal-in .thoughts-toolbar,
-    .section.reveal-in .newsletter-box,
     .section.reveal-in .contact-content {
       opacity: 1;
       transform: translateY(0);
@@ -460,52 +409,6 @@
       background: var(--text-dark);
       color: #fff;
       border-color: var(--text-dark);
-    }
-
-    /* Newsletter callout – readers open your writing */
-    .newsletter-cta {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 3rem 2.5rem 2rem;
-    }
-
-    .newsletter-box {
-      max-width: 640px;
-      margin: 0 auto;
-      padding: 2.5rem 2rem;
-      border: 1px solid var(--border-subtle);
-      background: #fff;
-      text-align: center;
-      transition: opacity 0.5s ease, transform 0.5s ease;
-    }
-
-    .newsletter-kicker {
-      font-size: 0.7rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--text-light);
-      margin-bottom: 0.75rem;
-    }
-
-    .newsletter-box h2 {
-      font-size: clamp(1.35rem, 3vw, 1.75rem);
-      font-weight: 600;
-      margin-bottom: 0.75rem;
-      color: var(--text-dark);
-    }
-
-    .newsletter-box .newsletter-lead {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      line-height: 1.7;
-      margin-bottom: 1.75rem;
-    }
-
-    .newsletter-actions {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
     }
 
     /* Core focus / About – title row + 3 cards */
@@ -899,6 +802,36 @@
       }
     }
 
+    @media (max-width: 640px) {
+      header {
+        padding: 1rem 1.25rem 2.25rem;
+      }
+
+      header .logo span:not(.logo-mark) {
+        display: inline;
+      }
+
+      nav {
+        top: 3.6rem;
+        left: 0;
+        right: 0;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.4rem 1rem;
+        padding: 0 1rem;
+      }
+
+      nav a {
+        font-size: 0.78rem;
+      }
+
+      nav .lang-toggle {
+        position: fixed;
+        top: 1.4rem;
+        right: 1.25rem;
+      }
+    }
+
     html {
       scroll-behavior: smooth;
     }
@@ -998,15 +931,11 @@
       .transition-overlay .loader-line-inner { animation: none; }
       .transition-overlay .loader-line-inner { width: 60%; margin-left: 20%; }
       .logo-mark .circle-fill,
-      .logo-mark .circle-outline,
-      .section-logo .circle-fill,
-      .section-logo .circle-outline {
+      .logo-mark .circle-outline {
         animation: none;
       }
       .logo-mark .circle-fill { transform: rotate(-20deg); }
       .logo-mark .circle-outline { transform: rotate(20deg); }
-      .section-logo .circle-fill { transform: rotate(-20deg); }
-      .section-logo .circle-outline { transform: rotate(20deg); }
       .hero .hero-item {
         animation: none;
         opacity: 1;
@@ -1019,7 +948,6 @@
       .section.reveal-ready .projects-grid,
       .section.reveal-ready .thoughts-grid,
       .section.reveal-ready .thoughts-toolbar,
-      .section.reveal-ready .newsletter-box,
       .section.reveal-ready .contact-content,
       .section.reveal-ready .card,
       .section.reveal-ready .project-card,
@@ -1050,11 +978,10 @@
   </header>
 
   <nav>
-    <a href="#home" data-en="Home" data-zh="首页">Home</a>
     <a href="#about" data-en="About" data-zh="关于">About</a>
-    <a href="#projects" class="js-transition" data-transition="scroll" data-target="#projects" data-en="Projects" data-zh="项目">Projects</a>
-    <a href="#thoughts" class="js-thoughts-jump" data-thoughts-filter="newsletter" data-en="Newsletter" data-zh="通讯">Newsletter</a>
+    <a href="#projects" data-en="Projects" data-zh="项目">Projects</a>
     <a href="#thoughts" class="js-thoughts-jump" data-thoughts-filter="all" data-en="Thoughts" data-zh="随笔">Thoughts</a>
+    <a href="files.html" class="js-transition" data-transition="page" data-en="Files" data-zh="资料">Files</a>
     <a href="#contact" data-en="Contact" data-zh="联系">Contact</a>
     <button type="button" class="lang-toggle" id="lang-toggle" aria-label="Switch language / 切换语言">
       <span class="lang-opt" data-lang="zh">中</span>
@@ -1067,18 +994,12 @@
     <p class="tagline hero-item" data-en="Software Developer &amp; Creative Problem Solver" data-zh="软件开发者 · 创意问题解决者">Software Developer &amp; Creative Problem Solver</p>
     <p class="sub hero-item" data-en="Development / Design / Collaboration" data-zh="开发 / 设计 / 协作">Development / Design / Collaboration</p>
     <div class="cta-wrap hero-item">
-      <a href="#contact" class="btn btn-primary" data-en="Get in Touch" data-zh="联系我">Get in Touch</a>
-      <a href="#projects" class="btn js-transition" data-transition="scroll" data-target="#projects" data-en="View Work" data-zh="查看作品">View Work</a>
-      <a href="#thoughts" class="btn js-thoughts-jump" data-thoughts-filter="newsletter" data-en="Newsletter" data-zh="通讯">Newsletter</a>
-      <a href="resume.html" class="btn js-transition" data-transition="page" data-en="View PDF" data-zh="查看简历">View PDF</a>
+      <a href="#projects" class="btn btn-primary" data-en="View Work" data-zh="查看作品">View Work</a>
+      <a href="resume.html" class="btn js-transition" data-transition="page" data-en="Resume" data-zh="简历">Resume</a>
     </div>
   </section>
 
   <section id="about" class="section reveal-ready">
-    <span class="section-logo" aria-hidden="true">
-      <span class="circle-fill"></span>
-      <span class="circle-outline"></span>
-    </span>
     <div class="section-head">
       <h2 data-en="Focus" data-zh="专注领域">Focus</h2>
       <span class="en" data-en="Core areas" data-zh="核心方向">Core areas</span>
@@ -1103,10 +1024,6 @@
   </section>
 
   <section id="manifesto" class="section manifesto reveal-ready">
-    <span class="section-logo" aria-hidden="true">
-      <span class="circle-fill"></span>
-      <span class="circle-outline"></span>
-    </span>
     <div class="section-head">
       <span class="en" data-en="Manifesto" data-zh="理念">Manifesto</span>
     </div>
@@ -1126,25 +1043,7 @@
     </svg>
   </section>
 
-  <section id="newsletter-cta" class="section newsletter-cta reveal-ready" aria-labelledby="newsletter-cta-title">
-    <div class="newsletter-box">
-      <p class="newsletter-kicker" data-en="For readers" data-zh="致读者">For readers</p>
-      <h2 id="newsletter-cta-title" data-en="Newsletter &amp; writing" data-zh="通讯与写作">Newsletter &amp; writing</h2>
-      <p class="newsletter-lead" data-en="Read what I publish—newsletter drafts, notes, and longer thoughts. Everything lives in one place; visitors only need to click below." data-zh="阅读我发布的内容——通讯草稿、笔记与更长的思考。一切都在这里，点击下方即可。">
-        Read what I publish—newsletter drafts, notes, and longer thoughts. Everything lives in one place; visitors only need to click below.
-      </p>
-      <div class="newsletter-actions">
-        <a href="#thoughts" class="btn btn-primary js-thoughts-jump" data-thoughts-filter="newsletter" data-en="Newsletter" data-zh="通讯">Newsletter</a>
-        <a href="#thoughts" class="btn js-thoughts-jump" data-thoughts-filter="all" data-en="All thoughts" data-zh="全部随笔">All thoughts</a>
-      </div>
-    </div>
-  </section>
-
   <section id="projects" class="section reveal-ready">
-    <span class="section-logo" aria-hidden="true">
-      <span class="circle-fill"></span>
-      <span class="circle-outline"></span>
-    </span>
     <div class="section-head">
       <h2 data-en="Projects" data-zh="项目">Projects</h2>
       <span class="en" data-en="Selected work" data-zh="精选作品">Selected work</span>
@@ -1184,10 +1083,6 @@
   </section>
 
   <section id="thoughts" class="section reveal-ready">
-    <span class="section-logo" aria-hidden="true">
-      <span class="circle-fill"></span>
-      <span class="circle-outline"></span>
-    </span>
     <div class="section-head">
       <h2 data-en="Thoughts" data-zh="随笔">Thoughts</h2>
       <span class="en" data-en="Notes &amp; newsletter" data-zh="笔记与通讯">Notes &amp; newsletter</span>
@@ -1203,10 +1098,6 @@
   </section>
 
   <section id="contact" class="section reveal-ready">
-    <span class="section-logo" aria-hidden="true">
-      <span class="circle-fill"></span>
-      <span class="circle-outline"></span>
-    </span>
     <div class="section-head">
       <h2 data-en="Contact" data-zh="联系">Contact</h2>
       <span class="en" data-en="Get in touch" data-zh="与我联系">Get in touch</span>
@@ -1232,6 +1123,7 @@
         <a href="mailto:zhaoyic3002@gmail.com" class="social-link" data-en="Email" data-zh="邮箱">Email</a>
         <a href="https://www.linkedin.com/in/zhaoyi-chen-58bb9b395" target="_blank" rel="noopener" class="social-link">LinkedIn</a>
         <a href="https://github.com/chenzhaoyilila" target="_blank" rel="noopener" class="social-link">GitHub</a>
+        <a href="https://www.youtube.com/@michaelchen4098" target="_blank" rel="noopener" class="social-link">YouTube</a>
       </div>
     </div>
   </section>
@@ -1341,31 +1233,12 @@
         if (lbl) lbl.textContent = t('loading');
       }
 
-      function hideOverlay() {
-        if (!overlay) return;
-        overlay.classList.add('out');
-        overlay.classList.remove('active');
-        setTimeout(function () {
-          overlay.setAttribute('aria-hidden', 'true');
-        }, 400);
-      }
-
       document.body.addEventListener('click', function (e) {
         var link = e.target.closest('a.js-transition');
         if (!link || !link.getAttribute('data-transition')) return;
         e.preventDefault();
         var transition = link.getAttribute('data-transition');
         var target = link.getAttribute('data-target') || link.getAttribute('href');
-
-        if (transition === 'scroll' && target && target.charAt(0) === '#') {
-          showOverlay('Loading');
-          setTimeout(function () {
-            var el = document.querySelector(target);
-            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            hideOverlay();
-          }, OVERLAY_DURATION);
-          return;
-        }
 
         if (transition === 'page' && target) {
           showOverlay('Loading');
@@ -1507,7 +1380,7 @@
         if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
 
-      fetch(POSTS_URL)
+      fetch(POSTS_URL, { cache: 'no-cache' })
         .then(function (r) {
           if (!r.ok) throw new Error('fetch failed');
           return r.json();
@@ -1570,5 +1443,6 @@
         '&body=' + encodeURIComponent(body);
     }
   </script>
+  <script src="assets/interactions.js" defer></script>
 </body>
 </html>
