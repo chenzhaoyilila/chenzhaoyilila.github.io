@@ -22,3 +22,6 @@ content/posts/*.draft.md
 
 # ---- Files page: PDFs you deliberately publish live here ----
 !files/pdf/*.pdf
+
+# ---- Personal scripts, not part of the website ----
+AudioEx.py
